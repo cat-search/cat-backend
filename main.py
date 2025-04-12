@@ -14,6 +14,7 @@ from src.core.log import logger
 from src.core.settings import settings
 from src.front.router import router as front_router
 from src.core.db import init_pool
+from src.core.util import CatState
 
 
 tags_metadata = [
@@ -24,20 +25,13 @@ tags_metadata = [
 ]
 
 
-# Shared application variables class
-@dataclass
-class CatState:
-    db_pool:   Pool = None                 # DB connection pool
-    ht_client: httpx.AsyncClient = None    # Http client
-
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """
     FastAPI application launcher
     """
     # Shared application variables
-    app.state.cat        = CatState()
+    app.state.cat           = CatState()
     app.state.cat.ht_client = httpx.AsyncClient(timeout=settings.request_timeout)
     app.state.cat.db_pool   = await init_pool()
 
