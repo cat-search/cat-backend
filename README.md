@@ -4,10 +4,9 @@
 
 # Algo
 
-Actions:
+Модули проекта:
 - Front
   - User query. Log query
-  - User response. Log response
 - VectorDB
   - Embed user query
   - Search VectorDB. Log doc ids and duration
@@ -41,4 +40,10 @@ Actions:
 ├── README.md               # Main README
 
 ```
+
+# Local development
+
+Swagger:
+- http://127.0.0.1:8000/docs
+
 
