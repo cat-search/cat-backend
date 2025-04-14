@@ -19,7 +19,7 @@ from src.core.db import init_pool
 from src.core.util import CatState
 from src.vectordb.weaviate_vdb import init_weaviate, init_weaviate_async
 
-
+# привет
 tags_metadata = [
     {
         "name": "front",
