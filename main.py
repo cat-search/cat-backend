@@ -10,11 +10,14 @@ from fastapi_cache import FastAPICache
 from fastapi_cache.backends.inmemory import InMemoryBackend
 from sqlalchemy import create_engine
 from starlette.requests import Request
+from weaviate.client import WeaviateClient
+
 from src.core.log import logger
 from src.core.settings import settings
 from src.front.router import router as front_router
 from src.core.db import init_pool
 from src.core.util import CatState
+from src.vectordb.weaviate_vdb import init_weaviate, init_weaviate_async
 
 
 tags_metadata = [
@@ -31,17 +34,22 @@ async def lifespan(app: FastAPI):
     FastAPI application launcher
     """
     # Shared application variables
-    app.state.cat           = CatState()
-    app.state.cat.ht_client = httpx.AsyncClient(timeout=settings.request_timeout)
-    app.state.cat.db_pool   = await init_pool()
+    app.state.cat       = CatState()
+    cat_state: CatState = app.state.cat
+    cat_state.ht_client = httpx.AsyncClient(timeout=settings.request_timeout)
+    cat_state.db_pool   = await init_pool()
+    # cat_state.wc        = await init_weaviate_async()
+    cat_state.wc        = init_weaviate()
 
     FastAPICache.init(InMemoryBackend())
 
     yield
 
     # Application shutdown
-    await app.state.cat.ht_client.aclose()
-    await app.state.cat.db_pool.close()
+    await cat_state.ht_client.aclose()
+    await cat_state.db_pool.close()
+    # await cat_state.wc.close()
+    cat_state.wc.close()
     await FastAPICache.clear()
 
 

@@ -25,12 +25,12 @@ def compile_query(stmt) -> str:
     return result
 
 
-async def register_query(**kwargs):
+async def register_query(params: dict, cat_state: CatState, **kwargs):
     """
     Register query in DB
     """
-    params = kwargs.get('params')
-    cat_state: CatState = kwargs.get('request').app.state.cat
+    # params = kwargs.get('params')
+    # cat_state: CatState = kwargs.get('request').app.state.cat
     pool: asyncpg.Pool = cat_state.db_pool
     stmt = insert(QueryStatus).values(
         query_id=params.get('query_id'),
@@ -59,9 +59,9 @@ async def update_query_detail(**kwargs):
         # TODO: I'm here. It's failing with an error:
         #  sqlalchemy.exc.CompileError: Unconsumed column names: status
         status=params.get('status'),
-        vdb=settings.vdb_name,
+        vdb=settings.vdb_type,
         vdb_index=settings.vdb_index,
         vdb_latency=bindparam("vdb_latency", type_=Interval),
     )
-    res = await pool.execute(compile_query(stmt))
-    logger.debug(f"Update result: {res}")
+    # res = await pool.execute(compile_query(stmt))
+    # logger.debug(f"Update result: {res}")
