@@ -1,24 +1,16 @@
 from contextlib import asynccontextmanager
-from dataclasses import dataclass
-from typing import Annotated
-from asyncpg.pool import Pool
 
 import httpx
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.inmemory import InMemoryBackend
-from sqlalchemy import create_engine
-from starlette.requests import Request
-from weaviate.client import WeaviateClient
 
-from src.core.log import logger
-from src.core.settings import settings
-from src.front.router import router as front_router
 from src.core.db import init_pool
+from src.core.settings import settings
 from src.core.util import CatState
-from src.vectordb.weaviate_vdb import init_weaviate, init_weaviate_async
-
+from src.front.router import router as front_router
+from src.vectordb.weaviate_vdb import init_weaviate
 
 tags_metadata = [
     {
