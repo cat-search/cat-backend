@@ -1,16 +1,15 @@
-from datetime import timedelta
 from weaviate.classes.init import Auth
 from weaviate import WeaviateClient, WeaviateAsyncClient
 from weaviate import connect_to_local as weaviate_connect_to_local
+from weaviate.auth import AuthApiKey
+from weaviate.classes.init import Auth
+from weaviate.classes.query import MetadataQuery
 from weaviate.config import AdditionalConfig
 from weaviate.connect import ConnectionParams
-from weaviate.auth import AuthCredentials, AuthApiKey
-from weaviate.classes.query import MetadataQuery
-from weaviate.gql.filter import NearText
 
 from src.core.log import logger
-from src.core.util import measure_latency_async, CatState, measure_latency
 from src.core.settings import settings
+from src.core.util import measure_latency_async, CatState, measure_latency
 
 
 def init_weaviate() -> WeaviateClient:

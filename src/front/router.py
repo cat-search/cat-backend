@@ -3,11 +3,10 @@ from uuid import uuid4
 
 from fastapi import APIRouter, BackgroundTasks
 from loguru import logger
-from starlette.requests import Request  # TODO: check type(request)
+from starlette.requests import Request
 
 from src.core.db import (
     register_query,
-    update_query_detail,
 )
 from src.core.util import CatState
 from src.models.cat_public import Status

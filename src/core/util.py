@@ -1,9 +1,10 @@
-from functools import wraps
-from dataclasses import dataclass
-from asyncpg.pool import Pool
 import time
+from dataclasses import dataclass
+from functools import wraps
+
 import httpx
-from weaviate import WeaviateClient, WeaviateAsyncClient
+from asyncpg.pool import Pool
+from weaviate import WeaviateClient
 
 
 # Shared application variables class
