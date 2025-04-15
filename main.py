@@ -41,6 +41,12 @@ async def lifespan(app: FastAPI):
     # cat_state.wc        = await init_weaviate_async()
     cat_state.wc        = init_weaviate()
 
+    cat_state.llm_client = httpx.AsyncClient(
+        base_url=settings.llm_base_url,  # настройки
+        timeout=settings.llm_timeout,    # настройки
+        headers={"Authorization": f"Bearer {settings.llm_api_key}"}  # Если нужно
+    )
+    
     FastAPICache.init(InMemoryBackend())
 
     yield
@@ -50,6 +56,8 @@ async def lifespan(app: FastAPI):
     await cat_state.db_pool.close()
     # await cat_state.wc.close()
     cat_state.wc.close()
+    await cat_state.llm_client.aclose() #LLM-клиент закрывается
+
     await FastAPICache.clear()
 
 
