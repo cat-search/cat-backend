@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     log_level: str       = 'INFO'
 
     # db_conn_str: str     = 'postgresql://postgres:Oue$8AriEOdN@cat-vm2.v6.rocks:65432/catsearch'
-    db_conn_str: str     = 'postgresql://postgres:postgres@localhost:5433/catsearch'
+    db_conn_str: str     = 'postgresql://postgres:postgres@pg:5432/catsearch'
     alembic_db_name: str = 'catbackend'
 
     request_timeout: int = 30
