@@ -40,7 +40,8 @@ WORKDIR                         /opt/catsearch/cat-backend
 RUN poetry config virtualenvs.create false
 RUN poetry install --no-root --no-interaction --no-ansi --compile --only main
 
-ENV PYTHONPATH="${PYTHONPATH}:/opt/catsearch/cat-backend"
+#ENV PYTHONPATH="${PYTHONPATH}:/opt/catsearch/cat-backend"
+ENV PYTHONPATH=/opt/catsearch/cat-backend
 
 COPY ./entrypoint.sh            /opt/catsearch/cat-backend/entrypoint.sh
 RUN chmod +x                    /opt/catsearch/cat-backend/entrypoint.sh
