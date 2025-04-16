@@ -49,4 +49,4 @@ ENTRYPOINT ["/opt/catsearch/cat-backend/entrypoint.sh"]
 
 COPY ./src/                     /opt/catsearch/cat-backend/src
 
-CMD ["uvicorn", "main:app", "--port", "80"]
+CMD ["uvicorn", "src.main:app", "--port", "80"]
