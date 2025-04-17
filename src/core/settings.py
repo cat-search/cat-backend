@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     weaviate_host: str                  = "cat-vm2.v6.rocks"
     weaviate_port: int                  = 8080
     weaviate_grpc_port: int             = 50051
-    weaviate_api_key: str               = "Hack_the_VK"
+    weaviate_api_key: str               = "Search_the_VK"
     weaviate_collection: str            = "index_20250413"
     weaviate_api_endpoint: str          = "http://ollama:11434"
     # Model name. If it's `None`, uses the server-defined default
