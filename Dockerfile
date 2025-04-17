@@ -47,6 +47,9 @@ COPY ./entrypoint.sh            /opt/catsearch/cat-backend/entrypoint.sh
 RUN chmod +x                    /opt/catsearch/cat-backend/entrypoint.sh
 ENTRYPOINT ["/opt/catsearch/cat-backend/entrypoint.sh"]
 
+EXPOSE 8000
+
 COPY ./src/                     /opt/catsearch/cat-backend/src
 
-CMD ["uvicorn", "src.main:app", "--port", "80"]
+
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
