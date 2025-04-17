@@ -4,7 +4,6 @@ from pydantic_settings import BaseSettings, PydanticBaseSettingsSource, EnvSetti
 
 class Settings(BaseSettings):
     app_name: str        = 'cat-backend'
-    app_port: int        = 80
     app_version: str     = '0.0.0'
     title: str           = 'CatSearch API backend'
     log_level: str       = 'INFO'
