@@ -68,6 +68,8 @@ def retrieve_docs(
         return_metadata=MetadataQuery(distance=True),
     )
 
+    if len(result.objects) == 0:
+        logger.warning(f"VectorDB docs retrieved: {query_id}: {len(result.objects)}")
     logger.info(f"{msg} done")
     return result
 

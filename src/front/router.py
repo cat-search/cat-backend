@@ -68,6 +68,7 @@ async def user_query(
     docs: QueryReturn
     vdb_latency: float
     docs, vdb_latency = retrieve_docs(query_id, query_text, cat_state)
+    result.update({"vectordb_doc_count": len(docs.objects)})
     # result.update({"docs": docs})
     # params = {'query_id': query_id, 'status': Status.vdb_done, 'vdb_latency': vdb_latency}
     # background_tasks.add_task(
