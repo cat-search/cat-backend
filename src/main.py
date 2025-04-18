@@ -11,12 +11,17 @@ from src.core.settings import settings
 from src.core.util import CatState
 from src.front.router import router as front_router
 from src.llm.ollama_util import init_ollama_llm
+from src.vectordb.router import router as vdb_router
 from src.vectordb.weaviate_vdb import init_weaviate
 
 tags_metadata = [
     {
         "name": "front",
         "description": "User queries and responses",
+    },
+    {
+        "name": "vdb",
+        "description": "Vector DB",
     },
 ]
 
@@ -54,6 +59,7 @@ app = FastAPI(
     openapi_tags=tags_metadata,
 )
 app.include_router(front_router)     # Front UI methods
+app.include_router(vdb_router)       # Vector DB methods
 
 
 @app.get('/health', include_in_schema=False)

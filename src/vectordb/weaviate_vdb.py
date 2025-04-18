@@ -98,3 +98,4 @@ async def retrieve_docs_async(
 
     logger.info(f"{msg} done")
     return result
+
