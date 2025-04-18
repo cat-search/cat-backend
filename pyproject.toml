@@ -17,7 +17,8 @@ dependencies = [
     "loguru (>=0.7.3,<0.8.0)",
     "langchain (>=0.3.23,<0.4.0)",
     "psycopg2-binary (>=2.9.10,<3.0.0)",
-    "weaviate-client (>=4.13.2,<5.0.0)"
+    "weaviate-client (>=4.13.2,<5.0.0)",
+    "langchain-ollama (>=0.3.2,<0.4.0)"
 ]
 
 
