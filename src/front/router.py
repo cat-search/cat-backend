@@ -2,14 +2,15 @@ from datetime import datetime, UTC, timedelta
 from uuid import uuid4
 
 from fastapi import APIRouter, BackgroundTasks
-from loguru import logger
 from starlette.requests import Request
+from weaviate.collections.classes.internal import QueryReturn
 
 from src.core.db import (
     register_query,
 )
+from src.core.log import logger
 from src.core.util import CatState
-from src.models.cat_public import Status
+from src.llm.ollama_util import llm_make_query
 from src.vectordb.weaviate_vdb import retrieve_docs
 
 router = APIRouter()
@@ -61,14 +62,14 @@ async def user_query(
     # 2. Save query into db
     background_tasks.add_task(register_query, params=result, cat_state=cat_state)
 
-    # 3. Embed query
-    # Inside weaviate. No need to implement
-
+    # 3. Embed query (Inside weaviate. No need to implement)
     # 4. Query vectordb
     # docs, vdb_latency = await retrieve_docs_async(query_id, query_text, cat_state)
+    docs: QueryReturn
+    vdb_latency: timedelta
     docs, vdb_latency = retrieve_docs(query_id, query_text, cat_state)
-    result.update({"docs": docs})
-    params = {'query_id': query_id, 'status': Status.vdb_done, 'vdb_latency': vdb_latency}
+    # result.update({"docs": docs})
+    # params = {'query_id': query_id, 'status': Status.vdb_done, 'vdb_latency': vdb_latency}
     # background_tasks.add_task(
     #     update_query_detail, params=params, cat_state=cat_state,
     # )
@@ -78,15 +79,20 @@ async def user_query(
     ...
 
     # 6. Query llm
-    ...
+    llm_response: str
+    llm_latency: timedelta
+    llm_response, llm_latency = llm_make_query(query_id, query_text, docs, cat_state)
+    logger.info(f"LLM latency: {llm_latency}")
 
     # 7. Response to user
-    response_text: str = "Text of response"
+    # response_text: str = "Text of response"
     response_timestamp: datetime = datetime.now(UTC)
     latency: timedelta = response_timestamp - query_timestamp
     result.update(
         {
-            "response_text"      : response_text,
+            "response_text"      : llm_response,
+            "vdb_latency"        : vdb_latency.total_seconds(),
+            "llm_latency"        : llm_latency.total_seconds(),
             "latency"            : latency.total_seconds(),
         }
     )

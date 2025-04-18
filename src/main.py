@@ -10,6 +10,7 @@ from src.core.db import init_pool
 from src.core.settings import settings
 from src.core.util import CatState
 from src.front.router import router as front_router
+from src.llm.ollama_util import init_ollama_llm
 from src.vectordb.weaviate_vdb import init_weaviate
 
 tags_metadata = [
@@ -32,6 +33,7 @@ async def lifespan(app: FastAPI):
     cat_state.db_pool   = await init_pool()
     # cat_state.wc        = await init_weaviate_async()
     cat_state.wc        = init_weaviate()
+    cat_state.llm_client = init_ollama_llm()
 
     FastAPICache.init(InMemoryBackend())
 

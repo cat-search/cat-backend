@@ -1,9 +1,10 @@
-from weaviate.classes.init import Auth
 from weaviate import WeaviateClient, WeaviateAsyncClient
 from weaviate import connect_to_local as weaviate_connect_to_local
 from weaviate.auth import AuthApiKey
 from weaviate.classes.init import Auth
 from weaviate.classes.query import MetadataQuery
+from weaviate.collections.classes.internal import QueryReturn
+from weaviate.collections.collection.sync import Collection as SyncCollection
 from weaviate.config import AdditionalConfig
 from weaviate.connect import ConnectionParams
 
@@ -56,13 +57,12 @@ async def init_weaviate_async() -> WeaviateAsyncClient:
 @measure_latency
 def retrieve_docs(
         query_id: str, query_text: str, cat_state: CatState
-) -> list[dict]:
+) -> QueryReturn:
     logger.info(msg := f"VectorDB retrieving: {query_id} ...")
 
-    wc: WeaviateAsyncClient = cat_state.wc
-
-    coll = wc.collections.get(settings.weaviate_collection)
-    result = coll.query.near_text(
+    wc: WeaviateClient = cat_state.wc
+    coll: SyncCollection = wc.collections.get(settings.weaviate_collection)
+    result: QueryReturn = coll.query.near_text(
         query=query_text,
         limit=settings.weaviate_doc_limit,
         return_metadata=MetadataQuery(distance=True),

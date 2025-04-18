@@ -4,6 +4,7 @@ from functools import wraps
 
 import httpx
 from asyncpg.pool import Pool
+from langchain_ollama.llms import OllamaLLM
 from weaviate import WeaviateClient
 
 
@@ -14,6 +15,7 @@ class CatState:
     ht_client: httpx.AsyncClient = None    # Http client
     # wc:        WeaviateAsyncClient = None  # Weaviate DB client
     wc:        WeaviateClient = None  # Weaviate DB client
+    llm_client: OllamaLLM = None
 
 
 def measure_latency_async(func):
