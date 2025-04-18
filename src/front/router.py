@@ -66,7 +66,7 @@ async def user_query(
     # 4. Query vectordb
     # docs, vdb_latency = await retrieve_docs_async(query_id, query_text, cat_state)
     docs: QueryReturn
-    vdb_latency: timedelta
+    vdb_latency: float
     docs, vdb_latency = retrieve_docs(query_id, query_text, cat_state)
     # result.update({"docs": docs})
     # params = {'query_id': query_id, 'status': Status.vdb_done, 'vdb_latency': vdb_latency}
@@ -80,20 +80,19 @@ async def user_query(
 
     # 6. Query llm
     llm_response: str
-    llm_latency: timedelta
+    llm_latency: float
     llm_response, llm_latency = llm_make_query(query_id, query_text, docs, cat_state)
     logger.info(f"LLM latency: {llm_latency}")
 
     # 7. Response to user
-    # response_text: str = "Text of response"
     response_timestamp: datetime = datetime.now(UTC)
     latency: timedelta = response_timestamp - query_timestamp
     result.update(
         {
-            "response_text"      : llm_response,
-            "vdb_latency"        : vdb_latency.total_seconds(),
-            "llm_latency"        : llm_latency.total_seconds(),
+            "vdb_latency"        : vdb_latency,
+            "llm_latency"        : llm_latency,
             "latency"            : latency.total_seconds(),
+            "response_text"      : llm_response,
         }
     )
     return result
