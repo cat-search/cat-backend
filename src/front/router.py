@@ -91,6 +91,8 @@ async def user_query(
     result.update(
         {
             "response_text"      : llm_response,
+            "vdb_latency"        : vdb_latency.total_seconds(),
+            "llm_latency"        : llm_latency.total_seconds(),
             "latency"            : latency.total_seconds(),
         }
     )
