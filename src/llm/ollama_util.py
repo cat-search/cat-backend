@@ -43,8 +43,13 @@ def llm_make_query(
     logger.info(f"LLM prompt size: {len(llm_prompt)}")
 
     # 2. Запрос к LLM (с таймаутом)
-    llm_client: OllamaLLM = cat_state.llm_client
-    llm_response: str = llm_client.invoke(llm_prompt)
+    try:
+        llm_client: OllamaLLM = cat_state.llm_client
+        llm_response: str = llm_client.invoke(llm_prompt)
+    except Exception as e:
+        logger.error(f"LLM query failed: {str(e)}")
+        llm_response = f"error: LLM query failed: {e}"
+
     logger.info(f"{msg} done")
     # llm_response = await asyncio.wait_for(
     #     cat_state.llm_client.generate(llm_prompt),
