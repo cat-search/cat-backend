@@ -3,6 +3,9 @@ from starlette.requests import Request
 from weaviate import WeaviateClient
 
 from src.core.log import logger
+from src.core.settings import settings
+from src.core.util import CatState
+from src.vectordb.weaviate_vdb import retrieve_docs
 
 router = APIRouter()
 
@@ -70,3 +73,24 @@ async def get_collection_count(
     coll = wc.collections.get(name)
     result = coll.aggregate.over_all(total_count=True)
     return result
+
+
+@logger.catch
+@router.get(
+    "/vdb/docs",
+    tags=['vdb'],
+    summary="Get documents",
+    description=f"""
+        Weaviate. Retrieve documents by query from collection
+        
+        - Default collection: {settings.weaviate_collection}
+    """,
+)
+async def get_docs(
+        request: Request,
+        query_text: str,
+        collection_name: str,
+):
+    cat_state: CatState = request.app.state.cat
+    docs, vdb_latency = retrieve_docs('0', query_text, cat_state, collection_name)
+    return docs
