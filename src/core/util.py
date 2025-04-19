@@ -1,6 +1,7 @@
 import time
 from dataclasses import dataclass
 from functools import wraps
+from typing import Any
 
 import httpx
 from asyncpg.pool import Pool
@@ -32,11 +33,11 @@ def measure_latency_async(func):
 
 def measure_latency(func):
     @wraps(func)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args, **kwargs) -> tuple[Any, float]:
         start = time.perf_counter()
         result = func(*args, **kwargs)
         end = time.perf_counter()
-        latency = end - start
+        latency: float = end - start
         return result, latency
 
     return wrapper
