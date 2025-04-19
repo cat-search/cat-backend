@@ -56,12 +56,15 @@ async def init_weaviate_async() -> WeaviateAsyncClient:
 
 @measure_latency
 def retrieve_docs(
-        query_id: str, query_text: str, cat_state: CatState
+        query_id: str,
+        query_text: str,
+        cat_state: CatState,
+        collection_name: str = settings.weaviate_collection,
 ) -> QueryReturn:
     logger.info(msg := f"VectorDB retrieving: {query_id} ...")
 
     wc: WeaviateClient = cat_state.wc
-    coll: SyncCollection = wc.collections.get(settings.weaviate_collection)
+    coll: SyncCollection = wc.collections.get(collection_name)
     result: QueryReturn = coll.query.near_text(
         query=query_text,
         limit=settings.weaviate_doc_limit,
