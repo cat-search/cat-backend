@@ -1,5 +1,4 @@
-from pydantic import Field
-from pydantic_settings import BaseSettings, PydanticBaseSettingsSource, EnvSettingsSource
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -31,6 +30,12 @@ class Settings(BaseSettings):
     llm_url: str                        = "http://localhost:11434"
     llm_model: str                      = "llama3"
     # llm_doc_limit: int                  = 5
+
+    # Ability to read variables from .env
+    model_config = SettingsConfigDict(
+        env_file='.env',
+        env_file_encoding='utf-8',
+    )
 
 
 settings = Settings()
