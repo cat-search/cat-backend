@@ -7,8 +7,7 @@ class Settings(BaseSettings):
     title: str           = 'CatSearch API backend'
     log_level: str       = 'INFO'
 
-    # db_conn_str: str     = 'postgresql://postgres:Oue$8AriEOdN@cat-vm2.v6.rocks:65432/catsearch'
-    db_conn_str: str     = 'postgresql://postgres:postgres@pg:5432/catsearch'
+    db_conn_str: str     = 'postgresql://postgres:Oue$8AriEOdN@pg:5432/catsearch'
     alembic_db_name: str = 'catbackend'
 
     request_timeout: int = 30
@@ -16,18 +15,17 @@ class Settings(BaseSettings):
     vdb_type: str        = 'weaviate'
 
     # Vector DB. weaviate
-    # weaviate_host: str                  = "localhost"
     weaviate_host: str                  = "weaviate"
     weaviate_port: int                  = 8080
     weaviate_grpc_port: int             = 50051
     weaviate_api_key: str               = "Search_the_VK"
-    weaviate_collection: str            = "index_20250413"
+    weaviate_collection: str            = "catsearch"
     weaviate_api_endpoint: str          = "http://ollama:11434"
     # Model name. If it's `None`, uses the server-defined default
     weaviate_model: str                 = "nomic-embed-text"
     weaviate_doc_limit: int             = 5
 
-    llm_url: str                        = "http://localhost:11434"
+    llm_url: str                        = "http://ollama:11434"
     llm_model: str                      = "llama3"
     # llm_doc_limit: int                  = 5
 
