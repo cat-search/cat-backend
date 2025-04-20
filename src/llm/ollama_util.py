@@ -34,11 +34,9 @@ def llm_make_query(
         for doc in docs.objects
     )
     logger.info(f"Context size: {len(context)}, from {len(docs.objects)} docs")
-    llm_prompt: str = (
-        f"""
-        Вопрос: {query_text}
-        Контекст: {context}
-        """
+    llm_prompt: str = settings.llm_prompt_template.format(
+        context=context,
+        question=query_text,
     )
     logger.info(f"LLM prompt size: {len(llm_prompt)}")
 

@@ -13,6 +13,8 @@ from src.front.router import router as front_router
 from src.llm.ollama_util import init_ollama_llm
 from src.vectordb.router import router as vdb_router
 from src.vectordb.weaviate_vdb import init_weaviate
+from src.llm.router import router as llm_router
+
 
 tags_metadata = [
     {
@@ -32,12 +34,12 @@ async def lifespan(app: FastAPI):
     FastAPI application launcher
     """
     # Shared application variables
-    app.state.cat       = CatState()
-    cat_state: CatState = app.state.cat
-    cat_state.ht_client = httpx.AsyncClient(timeout=settings.request_timeout)
-    cat_state.db_pool   = await init_pool()
-    # cat_state.wc        = await init_weaviate_async()
-    cat_state.wc        = init_weaviate()
+    app.state.cat        = CatState()
+    cat_state: CatState  = app.state.cat
+    cat_state.ht_client  = httpx.AsyncClient(timeout=settings.request_timeout)
+    cat_state.db_pool    = await init_pool()
+    # cat_state.wc         = await init_weaviate_async()
+    cat_state.wc         = init_weaviate()
     cat_state.llm_client = init_ollama_llm()
 
     FastAPICache.init(InMemoryBackend())
@@ -60,6 +62,7 @@ app = FastAPI(
 )
 app.include_router(front_router)     # Front UI methods
 app.include_router(vdb_router)       # Vector DB methods
+app.include_router(llm_router)       # Vector DB methods
 
 
 @app.get('/health', include_in_schema=False)

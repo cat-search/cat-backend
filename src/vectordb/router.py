@@ -89,8 +89,29 @@ async def get_collection_count(
 async def get_docs(
         request: Request,
         query_text: str,
-        collection_name: str,
+        collection_name: str = None,
 ):
     cat_state: CatState = request.app.state.cat
+    collection_name = settings.weaviate_collection if collection_name is None else collection_name
     docs, vdb_latency = retrieve_docs('0', query_text, cat_state, collection_name)
     return docs
+
+
+@logger.catch
+@router.delete(
+    "/vdb/collections/{name}",
+    tags=['vdb'],
+    summary="Delete collection",
+    description=f"""
+        Weaviate. Delete collection by name
+        
+        - Default collection: {settings.weaviate_collection}
+    """,
+)
+async def delete_collection(
+        request: Request,
+        collection_name: str,
+):
+    wc: WeaviateClient = request.app.state.cat.wc
+    wc.collections.delete(collection_name)
+    return {'result': 'success'}
