@@ -6,8 +6,10 @@ from asyncpg.pool import Pool
 import httpx
 from fastapi import FastAPI, Depends
 from fastapi.responses import HTMLResponse
-from fastapi_cache import FastAPICache
+# from fastapi_cache import FastAPICache
 from fastapi_cache.backends.inmemory import InMemoryBackend
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.redis import RedisBackend 
 from sqlalchemy import create_engine
 from starlette.requests import Request
 from weaviate.client import WeaviateClient
@@ -19,7 +21,7 @@ from src.core.db import init_pool
 from src.core.util import CatState
 from src.vectordb.weaviate_vdb import init_weaviate, init_weaviate_async
 
-# привет
+
 tags_metadata = [
     {
         "name": "front",
