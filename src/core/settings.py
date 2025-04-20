@@ -22,7 +22,7 @@ class Settings(BaseSettings):
     weaviate_collection: str            = "catsearch"
     weaviate_api_endpoint: str          = "http://ollama:11434"
     # Model name. If it's `None`, uses the server-defined default
-    weaviate_model: str                 = "nomic-embed-text"
+    weaviate_model: str                 = "snowflake-arctic-embed2"
     weaviate_doc_limit: int             = 5
 
     llm_url: str                        = "http://ollama:11434"
