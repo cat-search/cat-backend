@@ -22,12 +22,15 @@ class Settings(BaseSettings):
     weaviate_collection: str            = "catsearch"
     weaviate_api_endpoint: str          = "http://ollama:11434"
     # Model name. If it's `None`, uses the server-defined default
-    weaviate_model: str                 = "snowflake-arctic-embed2"
-    weaviate_doc_limit: int             = 5
+    weaviate_doc_limit: int             = 6
 
     llm_url: str                        = "http://ollama:11434"
     llm_model: str                      = "llama3"
-    # llm_doc_limit: int                  = 5
+    llm_temperature: float              = 0.3
+    llm_top_p: float                    = 0.9
+    llm_top_k: float                    = 40
+    llm_num_ctx: float                  = 8192  # 8K context
+    llm_repeat_penalty: float           = 1.15
     # 'updated_at': datetime.datetime(2025, 3, 28, 11, 7, 48, 983443, tzinfo=datetime.timezone.utc),
     # 'name': '02_Великие_музеи_мира_Прадо_Мадрид_2011.pdf',
     # 'site_name': 'Музеи',
@@ -47,6 +50,7 @@ class Settings(BaseSettings):
         - В конце каждого пункта добавьте ссылку на источник 
           в формате [сайт: {{site_name}}, документ: {{doc_name}}]({{doc_url}}) Размер {{doc_size}} байт.
         - Ответь на русском языке.
+        - Ответ не более 3 пунктов.
         - Если ответа нет - скажите "Не знаю\""""
     )
     # llm_prompt_template: str = (
