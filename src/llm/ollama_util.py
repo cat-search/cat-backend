@@ -10,6 +10,11 @@ def init_ollama_llm() -> OllamaLLM:
     llm_client: OllamaLLM = OllamaLLM(
         base_url=settings.llm_url,
         model=settings.llm_model,
+        temperature=settings.llm_temperature,
+        top_p=settings.llm_top_p,
+        top_k=settings.llm_top_k,
+        num_ctx=settings.llm_num_ctx,
+        repeat_penalty=settings.llm_repeat_penalty,
         # If we'll need more arguments, add arguments into settings. See line above.
     )
     return llm_client
