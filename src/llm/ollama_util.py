@@ -44,19 +44,10 @@ def llm_make_query(
         f"{{doc_type}}: {doc.properties.get('type')}, "
         f"{{doc_name}}: {doc.properties.get('name')}, "
         f"{{doc_size}}: {doc.properties.get('size')}, "
-        f"{{doc_url}}: {doc.properties.get('link')}, "
+        f"{{doc_url}}: ({doc.properties.get('link')}), "
         f"\n{doc.properties.get('content')}"
         for doc in docs.objects
     )
-    # context = "\n\n".join(
-    #     f"Сайт: {doc.properties.get('site_name')}, "
-    #     f"Тип документа: {doc.properties.get('type')}, "
-    #     f"Название документа: {doc.properties.get('name')}, "
-    #     f"Размер_документа_в_байтах: {doc.properties.get('size')}, "
-    #     f"Ссылка_на_документ: {doc.properties.get('link')}, "
-    #     f"\n{doc.properties.get('content')}"
-    #     for doc in docs.objects
-    # )
     logger.info(f"Context size: {len(context)}, from {len(docs.objects)} docs")
     llm_prompt: str = settings.llm_prompt_template.format(
         context=context,
