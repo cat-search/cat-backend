@@ -115,3 +115,29 @@ async def delete_collection(
     wc: WeaviateClient = request.app.state.cat.wc
     wc.collections.delete(collection_name)
     return {'result': 'success'}
+
+
+@logger.catch
+@router.put(
+    "/vdb/collections/{name}",
+    tags=['vdb'],
+    summary="Change collection",
+    description="Weaviate. Change active collection",
+)
+async def set_collection(
+        request: Request,
+        collection_name: str,
+):
+    logger.info(msg := f"Setting active collection: {collection_name} ...")
+    previous_collection: str = settings.weaviate_collection
+    settings.weaviate_collection = collection_name
+
+    result: dict = {
+        'settings.weaviate_collection': settings.weaviate_collection,
+        'previous_collection': previous_collection,
+        'settings.weaviate_host': settings.weaviate_host,
+        'settings.weaviate_port': settings.weaviate_port,
+        'settings.weaviate_grpc_port': settings.weaviate_grpc_port,
+    }
+    logger.info(f"{msg} done")
+    return result
